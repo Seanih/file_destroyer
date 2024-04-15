@@ -20,7 +20,9 @@ def open_files():
     # format file names
     formatted_names = [file.split("/")[-1] for file in filenames]
     message_area.setText("\n".join(formatted_names))
-    clear_btn.setVisible(bool(filenames))
+    if len(formatted_names) > 0:
+        clear_btn.setVisible(True)
+        destroy_btn.setDisabled(False)
 
 
 def show_confirmation_dialog():
@@ -54,6 +56,7 @@ def destroy_files():
                 message_area.setText("Destruction Successful")
                 # Update clear_btn visibility
                 clear_btn.setVisible(False)
+                destroy_btn.setDisabled(True)
 
     except Exception:
         msg = QMessageBox()
@@ -68,6 +71,7 @@ def clear_selection():
     message_area.setText("")
     clear_btn.setVisible(False)
     window.adjustSize()
+    destroy_btn.setDisabled(True)
 
 
 app = QApplication([])
@@ -103,8 +107,10 @@ destroy_btn.setToolTip("delete the selected file(s)")
 destroy_btn.setFixedWidth(100)
 layout.addWidget(destroy_btn, alignment=Qt.AlignmentFlag.AlignCenter)
 destroy_btn.clicked.connect(destroy_files)
+destroy_btn.setDisabled(True)
 
 window.setLayout(layout)
+window.move(650, 400)
 
 if __name__ == "__main__":
     window.show()
